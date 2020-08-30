@@ -14,7 +14,6 @@ Pipdepgenerator is tool to generate python project requirements.txt .
 
 ### Build-Steps:
 
-Install the dependencies and devDependencies and start the server.
 
 ```sh
 $ git clone https://github.com/dragtor/pipdepgenerator
