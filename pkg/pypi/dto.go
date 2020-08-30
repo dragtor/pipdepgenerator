@@ -8,6 +8,7 @@ type Info struct {
 	Name           string   `json:"name"`
 	RequiresDist   []string `json:"requires_dist"`
 	RequiresPython string   `json:"requires_python"`
+	Version        string   `json:"version"`
 }
 
 type Release struct {
