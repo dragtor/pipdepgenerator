@@ -8,11 +8,16 @@ import (
 	"github.com/dragtor/pipdepgenerator/pkg/fsutils"
 	"github.com/dragtor/pipdepgenerator/pkg/parse"
 	"github.com/dragtor/pipdepgenerator/pkg/pypi"
+	"github.com/spf13/cobra"
 )
 
 type Dependencies struct {
 	packages map[string]PackageDetails
 }
+
+var ProjectPath string
+var RequirementFilePath string
+
 type PackageDetails struct {
 	Name          string
 	LatestVersion string
@@ -64,4 +69,37 @@ func WriteToRequirementFile(dep Dependencies, filepath string) {
 func GenerateRequirementTxtFile(root, filepath string) {
 	dep := FindDependenciesForProject(root)
 	WriteToRequirementFile(dep, filepath)
+}
+
+var rootCmd = &cobra.Command{
+	Use:   "pipdepgenerator",
+	Short: "Tool to generate requirements.txt for your python project",
+	Long:  `A Fast and Flexible python dependecies retrival tool`,
+	Run: func(cmd *cobra.Command, args []string) {
+		GenerateRequirementTxtFile(ProjectPath, RequirementFilePath)
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.PersistentFlags().StringVarP(&ProjectPath, "projectpath", "p", ".", "project path location (required)")
+	rootCmd.PersistentFlags().StringVarP(&RequirementFilePath, "reqpath", "r", ".", "requirement.txt path location (required)")
+	rootCmd.MarkFlagRequired("projectpath")
+	rootCmd.MarkFlagRequired("reqpath")
+}
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Print the version number of Pipdepgenerator",
+	Long:  `0.0.1`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("pipdepgenerator v0.0.1")
+	},
+}
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
