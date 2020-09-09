@@ -40,3 +40,17 @@ from django.contrib.sessions.models import Session as DjangoSession
 from django.db import close_old_connections
 from flask.sessions import SessionInterface, SecureCookieSession
 import base64
+
+# Test Case Complexity : Low
+import A
+import A.B
+
+# Test Case Complexity: Medium
+from A.B.C import D as E
+from A.B.C import D, E, F
+
+# Test Case Complexity: High
+try:
+    from A.B.C import D, E, F
+except ImportError:
+    from A.B.C import D as E
